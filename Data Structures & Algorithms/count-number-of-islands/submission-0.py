@@ -1,0 +1,50 @@
+class Solution:
+    def numIslands(self, grid: List[List[str]]) -> int:
+
+        rows = len(grid)
+        cols = len(grid[0])
+
+        visited = set()
+        islands = 0
+
+        directions = [
+            (-1, 0),  # up
+            (1, 0),   # down
+            (0, -1),  # left
+            (0, 1)    # right
+        ]
+
+        def dfs(r, c):
+
+            # Outside the grid
+            if r < 0 or r >= rows or c < 0 or c >= cols:
+                return
+
+            # Water
+            if grid[r][c] == "0":
+                return
+
+            # Already visited
+            if (r, c) in visited:
+                return
+
+            # Mark as visited
+            visited.add((r, c))
+
+            # Explore all 4 directions
+            for dr, dc in directions:
+                nr = r + dr
+                nc = c + dc
+
+                dfs(nr, nc)
+
+        # Scan every cell
+        for r in range(rows):
+            for c in range(cols):
+
+                # Found a new island
+                if grid[r][c] == "1" and (r, c) not in visited:
+                    islands += 1
+                    dfs(r, c)
+
+        return islands
